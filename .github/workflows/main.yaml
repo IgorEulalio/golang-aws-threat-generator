@@ -1,0 +1,68 @@
+name: Build and Push to ECR
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  ECR_REGISTRY: 835596177334.dkr.ecr.us-east-1.amazonaws.com
+  ECR_REPOSITORY: golang-api
+  AWS_REGION: us-east-1
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      
+      - name: Create and change builder driver
+        id: create-and-change-builder-driver
+        run: |
+          docker buildx create --use --name=custom-docker-container-builder --driver=docker-container
+
+      - name: Build Docker image
+        id: build-image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: false
+          tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          load: true # Loads the image into the runner's Docker daemon
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Saving the image name to use it later
+        run: echo "IMAGE_NAME=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}" >> $GITHUB_ENV
+
+      - name: Scan image with built-in action
+        uses: sysdiglabs/scan-action@v4
+        with:
+          image-tag: ${{ env.IMAGE_NAME }}
+          sysdig-secure-token: ${{ secrets.SECURE_API_TOKEN }}
+          sysdig-secure-url: ${{ secrets.API_URL }}
+
+      - name: Push Docker image to ECR
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          push: true
+
+      - name: Logout from Amazon ECR
+        if: always()
+        run: docker logout ${{ env.ECR_REGISTRY }}
