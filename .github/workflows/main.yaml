@@ -55,6 +55,7 @@ jobs:
           image-tag: ${{ env.IMAGE_NAME }}
           sysdig-secure-token: ${{ secrets.SECURE_API_TOKEN }}
           sysdig-secure-url: ${{ secrets.API_URL }}
+          stop-on-failed-policy-eval: true
 
       - name: Push Docker image to ECR
         uses: docker/build-push-action@v2
