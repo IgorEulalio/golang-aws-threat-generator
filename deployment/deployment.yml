@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: release-book
+  name: release-book
+  namespace: release-book
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: release-book
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: release-book
+    spec:
+      containers:
+      - image: 835596177334.dkr.ecr.us-east-1.amazonaws.com/golang-api:59bb28b0f8ace9e46bc12d9837b377f5b967a32e
+        name: release-book
+        resources: {}
+status: {}
