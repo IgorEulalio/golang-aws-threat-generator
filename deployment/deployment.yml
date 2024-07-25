@@ -3,22 +3,25 @@ kind: Deployment
 metadata:
   labels:
     app: release-book
-  name: release-book
+  name: release-book-runtime
   namespace: release-book
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: release-book
+      app: release-book-runtime
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: release-book
+        app: release-book-runtime
     spec:
       containers:
-      - image: 835596177334.dkr.ecr.us-east-1.amazonaws.com/golang-api:59bb28b0f8ace9e46bc12d9837b377f5b967a32e
-        name: release-book
+      - image: 835596177334.dkr.ecr.us-east-1.amazonaws.com/golang-api:0b8f14fc3082c49768f596d8da51185689fc8322
+        imagePullPolicy: Always
+        name: release-book-runtime
+        ports:
+        - containerPort: 8080
         resources: {}
 status: {}
