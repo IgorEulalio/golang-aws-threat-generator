@@ -1,17 +1,13 @@
-FROM golang:1.20.6-alpine3.18 as builder
-
-RUN mkdir /build
-WORKDIR /build
-
-COPY . .
-
-RUN go mod tidy
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build main.go
+# FROM public.ecr.aws/o5z5d3z9/pgcrooks/workload-agent:gcr-beta as workload-agent
 
 FROM alpine:3.18
-ENV JWT=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 
-COPY --from=builder /build/main /
+COPY main /
 RUN chmod +x /main
 
-ENTRYPOINT ["/main"]
+COPY --from=workload-agent /opt/draios /opt/draios
+
+ENV SYSDIG_WORKLOAD_ID=release-book-gcr-test
+
+ENTRYPOINT ["/opt/draios/bin/instrument", "/main"]
+# ENTRYPOINT ["/main"]

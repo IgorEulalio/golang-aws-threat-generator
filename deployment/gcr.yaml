@@ -1,0 +1,86 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: release-book
+  namespace: '163839575370'
+  selfLink: /apis/serving.knative.dev/v1/namespaces/163839575370/services/release-book
+  uid: 2feccbaa-c32d-4ec7-86af-8fe0822c9492
+  resourceVersion: AAYeGd/z8hM
+  generation: 12
+  creationTimestamp: '2024-07-25T20:40:22.871948Z'
+  labels:
+    run.googleapis.com/satisfiesPzs: 'true'
+    cloud.googleapis.com/location: southamerica-east1
+  annotations:
+    serving.knative.dev/creator: esg.start.business@gmail.com
+    serving.knative.dev/lastModifier: esg.start.business@gmail.com
+    run.googleapis.com/client-name: cloud-console
+    run.googleapis.com/operation-id: 944a857b-a165-49a4-9cdd-c82d5c4e1ecd
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+spec:
+  template:
+    metadata:
+      labels:
+        client.knative.dev/nonce: ff6414d2-06d2-4e79-a656-fef0adf510ca
+        run.googleapis.com/startupProbeType: Custom
+      annotations:
+        autoscaling.knative.dev/maxScale: '100'
+        run.googleapis.com/client-name: cloud-console
+        run.googleapis.com/execution-environment: gen2
+        run.googleapis.com/cpu-throttling: 'false'
+        run.googleapis.com/startup-cpu-boost: 'true'
+    spec:
+      containerConcurrency: 80
+      timeoutSeconds: 300
+      serviceAccountName: 163839575370-compute@developer.gserviceaccount.com
+      containers:
+        - name: image-1
+          image: southamerica-east1-docker.pkg.dev/thinking-heaven-421211/golang-event-generator/instrumented:v2@sha256:94df2b275d8f96366f61fbddf98aa406577b422691fd570a91476794233f65fb
+          ports:
+            - name: http1
+              containerPort: 8080
+          env:
+            - name: SYSDIG_COLLECTOR
+              value: ingest.us4.sysdig.com
+            - name: SYSDIG_ACCESS_KEY
+              value: $access_key
+            - name: SYSDIG_ENABLE_LOG_FORWARD
+              value: 'false'
+            - name: SYSDIG_WORKLOAD_ID
+              value: release-book-app
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+          startupProbe:
+            initialDelaySeconds: 30
+            timeoutSeconds: 3
+            periodSeconds: 30
+            failureThreshold: 10
+            tcpSocket:
+              port: 8080
+  traffic:
+    - percent: 100
+      latestRevision: true
+status:
+  observedGeneration: 12
+  conditions:
+    - type: Ready
+      status: 'True'
+      lastTransitionTime: '2024-07-25T22:25:40.586003Z'
+    - type: ConfigurationsReady
+      status: 'True'
+      lastTransitionTime: '2024-07-25T20:40:23.003388Z'
+    - type: RoutesReady
+      status: 'True'
+      lastTransitionTime: '2024-07-25T22:25:40.558094Z'
+  latestReadyRevisionName: release-book-00012-xcj
+  latestCreatedRevisionName: release-book-00012-xcj
+  traffic:
+    - revisionName: release-book-00012-xcj
+      percent: 100
+      latestRevision: true
+  url: https://release-book-mwbxbogvoq-rj.a.run.app
+  address:
+    url: https://release-book-mwbxbogvoq-rj.a.run.app
