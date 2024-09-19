@@ -1,6 +1,6 @@
 # Variables
-IMAGE = southamerica-east1-docker.pkg.dev/thinking-heaven-421211/golang-event-generator/instrumented
-TAG = v2
+IMAGE = igoreulalio/release-book-architecture
+TAG = v1.0.0
 
 # Targets
 .PHONY: all build docker-build
