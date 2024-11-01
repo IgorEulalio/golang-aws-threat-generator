@@ -4,7 +4,7 @@ metadata:
   labels:
     app: release-book
   name: release-book-runtime
-  namespace: pci
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -18,7 +18,7 @@ spec:
         app: release-book-runtime
     spec:
       containers:
-      - image: igoreulalio/release-book-architecture:v1.0.0
+      - image: igoreulalio/release-book:random-tag-4
         imagePullPolicy: Always
         name: release-book-runtime
         ports:
