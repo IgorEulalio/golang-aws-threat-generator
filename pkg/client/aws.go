@@ -16,6 +16,7 @@ import (
 type AWSClient struct {
 	cfg       aws.Config
 	IamClient *iam.Client
+	StsClient *sts.Client
 }
 
 var (
@@ -72,6 +73,7 @@ func Init() error {
 		awsClient = &AWSClient{
 			cfg:       cfg,
 			IamClient: iamClient,
+			StsClient: stsClient,
 		}
 	})
 
@@ -84,4 +86,12 @@ func GetAWSClient() *AWSClient {
 
 func (client AWSClient) GetRegion() string {
 	return client.cfg.Region
+}
+
+func (client AWSClient) GetPrincipalArn() (*string, error) {
+	identity, err := client.StsClient.GetCallerIdentity(context.Background(), &sts.GetCallerIdentityInput{})
+	if err != nil {
+		return nil, err
+	}
+	return identity.Arn, nil
 }

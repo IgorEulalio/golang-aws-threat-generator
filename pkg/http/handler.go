@@ -64,16 +64,19 @@ func IamEnumeratorHandler(w http.ResponseWriter, r *http.Request) {
 
 	awsClient := client.GetAWSClient()
 	iamEnumerator := events.IAMEnumerator{AWSClient: awsClient}
-	err := iamEnumerator.EnumerateRolesThatCanBeAssumed()
+
+	roles, err := iamEnumerator.EnumerateRolesThatCanBeAssumed()
 	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to enumerate roles that can be assumed: %v", err), http.StatusInternalServerError)
 		return
 	}
 
-	// Enumerate roles that can be assumed
-	//if err != nil {
-	//	http.Error(w, fmt.Sprintf("Failed to enumerate roles: %v", err), http.StatusInternalServerError)
-	//	return
-	//}
-	//
-	//fmt.Fprintf(w, "Roles enumerated successfully")
+	jsonResponse, err := json.Marshal(roles)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to marshal roles to JSON: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonResponse)
 }
