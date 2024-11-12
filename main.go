@@ -24,7 +24,7 @@ func main() {
 	mux.HandleFunc("/", httphandlers.HelloHandler)
 	mux.HandleFunc("/events", httphandlers.EventsHandler)
 	mux.HandleFunc("/files", httphandlers.FilesHandler)
-	mux.HandleFunc("/iamEnumeration/", httphandlers.IamEnumeratorHandler)
+	mux.HandleFunc("/iamRolesEnumeration/", httphandlers.IamEnumeratorHandler)
 	// Start the server
 	addr := fmt.Sprintf(":%d", cfg.Port)
 	fmt.Printf("Starting server at port %d\n", cfg.Port)

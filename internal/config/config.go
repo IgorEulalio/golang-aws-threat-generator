@@ -29,5 +29,8 @@ func LoadConfig() *Config {
 
 	return &Config{
 		Port: port,
+		AwsConfig: AwsConfig{
+			Region: "sa-east-1",
+		},
 	}
 }
