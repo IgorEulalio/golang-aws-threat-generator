@@ -80,3 +80,30 @@ func IamEnumeratorHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(jsonResponse)
 }
+
+func AssumeRoleHandler(w http.ResponseWriter, r *http.Request) {
+
+	awsClient := client.GetAWSClient()
+	roleAssumer := events.AssumeRole{AWSClient: awsClient}
+
+	// get from request
+	roleArn, err := events.DecodeBodyIntoAssumeRole(r.Body)
+	if err != nil {
+		return
+	}
+
+	output, err := roleAssumer.AssumeByArn(*roleArn)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to assume role: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	jsonResponse, err := json.Marshal(output.Credentials.Expiration)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to marshal assumeRoleOutput to JSON: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonResponse)
+}
