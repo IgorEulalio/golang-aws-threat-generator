@@ -25,7 +25,6 @@ func main() {
 	mux.HandleFunc("/events", httphandlers.EventsHandler)
 	mux.HandleFunc("/files", httphandlers.FilesHandler)
 	mux.HandleFunc("/iamRolesEnumeration", httphandlers.IamEnumeratorHandler)
-	// assumeRole by arn
 	mux.HandleFunc("/assumeRole", httphandlers.AssumeRoleHandler)
 	addr := fmt.Sprintf(":%d", cfg.Port)
 	fmt.Printf("Starting server at port %d\n", cfg.Port)

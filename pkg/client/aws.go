@@ -7,7 +7,6 @@ import (
 	configuration "github.com/IgorEulalio/golang-threat-generator/internal/config"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
@@ -36,11 +35,10 @@ func Init() error {
 		var cfg aws.Config
 		var err error
 
-		if awsConfig.AccessKey != "" && awsConfig.SecretKey != "" && awsConfig.Region != "" {
+		if awsConfig.Region != "" {
 			cfg, err = config.LoadDefaultConfig(
 				context.TODO(),
 				config.WithRegion(awsConfig.Region),
-				config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(awsConfig.AccessKey, awsConfig.SecretKey, "")),
 			)
 		} else {
 			cfg, err = config.LoadDefaultConfig(context.TODO())

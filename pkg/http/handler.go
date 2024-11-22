@@ -98,7 +98,12 @@ func AssumeRoleHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	jsonResponse, err := json.Marshal(output.Credentials.Expiration)
+	payload := events.ResponsePayload{
+		RoleArn:    *roleArn,
+		Expiration: output.Credentials.Expiration.String(),
+	}
+
+	jsonResponse, err := json.Marshal(payload)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Failed to marshal assumeRoleOutput to JSON: %v", err), http.StatusInternalServerError)
 		return

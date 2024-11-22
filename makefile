@@ -1,6 +1,6 @@
 # Variables
 IMAGE = igoreulalio/release-book-architecture
-TAG = v1.0.0
+TAG = v1.0.9
 
 # Targets
 .PHONY: all build docker-build

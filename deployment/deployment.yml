@@ -13,12 +13,11 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: release-book-runtime
     spec:
       containers:
-      - image: igoreulalio/release-book:random-tag-4
+      - image: igoreulalio/release-book-architecture:v1.0.9
         imagePullPolicy: Always
         name: release-book-runtime
         ports:
@@ -26,4 +25,3 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 1000
-status: {}

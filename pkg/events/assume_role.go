@@ -46,3 +46,8 @@ func DecodeBodyIntoAssumeRole(payload io.Reader) (*string, error) {
 type AssumeRoleObject struct {
 	RoleArn string `json:"role_arn"`
 }
+
+type ResponsePayload struct {
+	RoleArn    string `json:"roleArn"`
+	Expiration string `json:"expiration"`
+}
