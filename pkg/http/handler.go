@@ -60,10 +60,10 @@ func EventsHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "File created: %s", filePath)
 }
 
-func IamEnumeratorHandler(w http.ResponseWriter, r *http.Request) {
+func IamRoleEnumeratorHandler(w http.ResponseWriter, r *http.Request) {
 
 	awsClient := client.GetAWSClient()
-	iamEnumerator := events.IAMEnumerator{AWSClient: awsClient}
+	iamEnumerator := events.IAMRoleEnumerator{AWSClient: awsClient}
 
 	roles, err := iamEnumerator.EnumerateRolesThatCanBeAssumed()
 	if err != nil {
@@ -111,4 +111,15 @@ func AssumeRoleHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(jsonResponse)
+}
+
+func IamGroupsAndUserEnumeratorHandler(w http.ResponseWriter, r *http.Request) {
+	enumerator := events.IAMUserEnumerator{}
+	err := enumerator.EnumerateUserAndPolicy()
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to enumerate IAM users and policies: %v", err), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte("IAM User and Policy enumerated"))
 }

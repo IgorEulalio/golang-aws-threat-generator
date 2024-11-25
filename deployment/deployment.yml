@@ -17,7 +17,7 @@ spec:
         app: release-book-runtime
     spec:
       containers:
-      - image: igoreulalio/release-book-architecture:v1.0.9
+      - image: igoreulalio/release-book-architecture:v2.0.0
         imagePullPolicy: Always
         name: release-book-runtime
         ports:

@@ -11,11 +11,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 )
 
-type IAMEnumerator struct {
+type IAMRoleEnumerator struct {
 	AWSClient *client.AWSClient
 }
 
-func (i IAMEnumerator) EnumerateRolesThatCanBeAssumed() ([]types.Role, error) {
+func (i IAMRoleEnumerator) EnumerateRolesThatCanBeAssumed() ([]types.Role, error) {
 	ctx := context.Background()
 
 	listRolesOutput, err := i.AWSClient.IamClient.ListRoles(ctx, &iam.ListRolesInput{})

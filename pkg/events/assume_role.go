@@ -16,10 +16,13 @@ type AssumeRole struct {
 
 func (a AssumeRole) AssumeByArn(roleArn string) (*sts.AssumeRoleOutput, error) {
 	ctx := context.Background()
+	var externalId string
+	externalId = "1930910491090192200000000"
 
 	input := sts.AssumeRoleInput{
 		RoleArn:         &roleArn,
 		RoleSessionName: aws.String("sysdig-demo-session"),
+		ExternalId:      aws.String(externalId),
 	}
 
 	role, err := a.AWSClient.StsClient.AssumeRole(ctx, &input)
