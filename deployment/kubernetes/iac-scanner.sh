@@ -1,0 +1,1 @@
+SECURE_API_TOKEN=$sysdig_personal_access_token_us4 sysdig-cli-scanner --apiurl $us4 --iac --list-unsupported-resources --policy "custom-eks-development"

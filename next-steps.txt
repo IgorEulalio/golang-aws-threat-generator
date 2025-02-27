@@ -1,0 +1,19 @@
+1. running locally, allow to search for any roles to escalate access
+2. verify if the role has access to generate user acess keys
+3. verify if the role has access to create new roles
+4. verify if the role has access to create new policies
+5. verify if the role has access to create new users
+6. verify if the role has access to create new groups
+7. if running on ec2, verify if can escalate access trough instance profile
+8. if running on ec2, verify if can escalate access trough instance metadata
+9. if running on ec2, verify if can escalate access trough instance user data
+
+
+Workflow:
+1. Hijack credentials using SSRF on EC2 metadata
+2. Enumerate IAM roles
+3. Enumerate IAM policies
+4. Enumerate IAM users
+5. Enumerate IAM groups
+6. Move laterally to another role with more access
+7. Delete database
