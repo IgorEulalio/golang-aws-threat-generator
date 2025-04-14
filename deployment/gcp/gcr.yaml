@@ -1,28 +1,19 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: release-book
-  namespace: '163839575370'
-  selfLink: /apis/serving.knative.dev/v1/namespaces/163839575370/services/release-book
-  uid: 2feccbaa-c32d-4ec7-86af-8fe0822c9492
-  resourceVersion: AAYeGd/z8hM
+  name: golang-threat-generator
   generation: 12
-  creationTimestamp: '2024-07-25T20:40:22.871948Z'
   labels:
     run.googleapis.com/satisfiesPzs: 'true'
     cloud.googleapis.com/location: southamerica-east1
   annotations:
-    serving.knative.dev/creator: esg.start.business@gmail.com
-    serving.knative.dev/lastModifier: esg.start.business@gmail.com
-    run.googleapis.com/client-name: cloud-console
-    run.googleapis.com/operation-id: 944a857b-a165-49a4-9cdd-c82d5c4e1ecd
+    serving.knative.dev/creator: igoreulalio.ie@gmail.com
     run.googleapis.com/ingress: all
     run.googleapis.com/ingress-status: all
 spec:
   template:
     metadata:
       labels:
-        client.knative.dev/nonce: ff6414d2-06d2-4e79-a656-fef0adf510ca
         run.googleapis.com/startupProbeType: Custom
       annotations:
         autoscaling.knative.dev/maxScale: '100'
@@ -63,24 +54,3 @@ spec:
   traffic:
     - percent: 100
       latestRevision: true
-status:
-  observedGeneration: 12
-  conditions:
-    - type: Ready
-      status: 'True'
-      lastTransitionTime: '2024-07-25T22:25:40.586003Z'
-    - type: ConfigurationsReady
-      status: 'True'
-      lastTransitionTime: '2024-07-25T20:40:23.003388Z'
-    - type: RoutesReady
-      status: 'True'
-      lastTransitionTime: '2024-07-25T22:25:40.558094Z'
-  latestReadyRevisionName: release-book-00012-xcj
-  latestCreatedRevisionName: release-book-00012-xcj
-  traffic:
-    - revisionName: release-book-00012-xcj
-      percent: 100
-      latestRevision: true
-  url: https://release-book-mwbxbogvoq-rj.a.run.app
-  address:
-    url: https://release-book-mwbxbogvoq-rj.a.run.app

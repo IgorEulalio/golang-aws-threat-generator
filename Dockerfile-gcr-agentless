@@ -1,6 +1,6 @@
-FROM public.ecr.aws/o5z5d3z9/pgcrooks/workload-agent:gcr-beta as workload-agent
+FROM quay.io/sysdig/workload-agent:latest as workload-agent
 
-FROM alpine:3.18
+FROM alpine:3.21
 
 COPY main /
 RUN chmod +x /main
@@ -8,5 +8,9 @@ RUN chmod +x /main
 COPY --from=workload-agent /opt/draios /opt/draios
 
 ENV SYSDIG_WORKLOAD_ID=release-book-gcr-test
+
+USER root
+
+EXPOSE 8080
 
 ENTRYPOINT ["/opt/draios/bin/instrument", "/main"]

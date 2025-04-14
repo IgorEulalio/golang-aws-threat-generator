@@ -16,8 +16,9 @@ func main() {
 
 	err := client.Init()
 	if err != nil {
-		log.Fatalf("Failed to initialize AWS client: %v", err)
+		log.Printf("Failed to initialize AWS client, AWS integration will not be available: %v", err)
 	}
+	log.Printf("Starting app, listening on port: %v", cfg.Port)
 
 	// Initialize HTTP handlers
 	mux := http.NewServeMux()
